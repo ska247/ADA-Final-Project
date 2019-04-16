@@ -1,0 +1,82 @@
+"0","```r
+library(readr) #for read txt file
+library(knitr) #for creating nicer tables
+library(tidyverse) # for various packages
+```"
+"1","[37m-- [1mAttaching packages[22m --------------------------------------- tidyverse 1.2.1 --[39m
+[37m[32mv[37m [34mggplot2[37m 3.0.0     [32mv[37m [34mpurrr  [37m 0.2.5
+[32mv[37m [34mtibble [37m 1.4.2     [32mv[37m [34mdplyr  [37m 0.7.6
+[32mv[37m [34mtidyr  [37m 0.8.1     [32mv[37m [34mstringr[37m 1.3.1
+[32mv[37m [34mggplot2[37m 3.0.0     [32mv[37m [34mforcats[37m 0.3.0[39m
+[37m-- [1mConflicts[22m ------------------------------------------ tidyverse_conflicts() --
+[31mx[37m [34mdplyr[37m::[32mfilter()[37m masks [34mstats[37m::filter()
+[31mx[37m [34mdplyr[37m::[32mlag()[37m    masks [34mstats[37m::lag()[39m
+"
+"0","```r
+library(nnet) #Multinomial logistic regresison
+library(MASS) #Ordinal logistic regression
+```"
+"1","
+Attaching package: ã¤¼ã¸±MASSã¤¼ã¸²
+
+The following object is masked from ã¤¼ã¸±package:dplyrã¤¼ã¸²:
+
+    select
+"
+"0","```r
+Breast_SEER_Class6 <- read_delim(\"Breast_SEER_Class6.txt\", \"\t\", escape_double = FALSE, trim_ws = TRUE)
+```"
+"1","Parsed with column specification:
+cols(
+  `Age recode with single ages and 85+` = col_character(),
+  `Race recode (White, Black, Other)` = col_character(),
+  Sex = col_character(),
+  `Year of diagnosis` = col_integer(),
+  `Derived AJCC Stage Group, 7th ed (2010+)` = col_character(),
+  `First malignant primary indicator` = col_character(),
+  `Patient ID` = col_character(),
+  `Insurance Recode (2007+)` = col_character(),
+  `Marital status at diagnosis` = col_character(),
+  `% Families below poverty ACS 2011-15` = col_character()
+)
+"
+"0","```r
+str(Breast_SEER_Class6)
+```"
+"1","Classes â€˜tbl_dfâ€™, â€˜tblâ€™ and 'data.frame':	36366 obs. of  10 variables:
+ $ Age recode with single ages and 85+     : chr  \"56 years\" \"45 years\" \"50 years\" \"60 years\" ...
+ $ Race recode (White, Black, Other)       : chr  \"White\" \"White\" \"White\" \"White\" ...
+ $ Sex                                     : chr  \"Female\" \"Female\" \"Female\" \"Female\" ...
+ $ Year of diagnosis                       : int  2014 2014 2014 2014 2014 2014 2014 2014 2014 2014 ...
+ $ Derived AJCC Stage Group, 7th ed (2010+): chr  \"IA\" \"IA\" \"UNK Stage\" \"IA\" ...
+ $ First malignant primary indicator       : chr  \"No\" \"No\" \"No\" \"No\" ...
+ $ Patient ID                              : chr  \"00000394\" \"00005024\" \"00009348\" \"00044791\" ...
+ $ Insurance Recode (2007+)                : chr  \"Insured\" \"Insured\" \"Insured\" \"Insured\" ...
+ $ Marital status at diagnosis             : chr  \"Married (including common law)\" \"Divorced\" \"Married (including common law)\" \"Divorced\" ...
+ $ % Families below poverty ACS 2011-15    : chr  \"00495\" \"00495\" \"00781\" \"00495\" ...
+ - attr(*, \"spec\")=List of 2
+  ..$ cols   :List of 10
+  .. ..$ Age recode with single ages and 85+     : list()
+  .. .. ..- attr(*, \"class\")= chr  \"collector_character\" \"collector\"
+  .. ..$ Race recode (White, Black, Other)       : list()
+  .. .. ..- attr(*, \"class\")= chr  \"collector_character\" \"collector\"
+  .. ..$ Sex                                     : list()
+  .. .. ..- attr(*, \"class\")= chr  \"collector_character\" \"collector\"
+  .. ..$ Year of diagnosis                       : list()
+  .. .. ..- attr(*, \"class\")= chr  \"collector_integer\" \"collector\"
+  .. ..$ Derived AJCC Stage Group, 7th ed (2010+): list()
+  .. .. ..- attr(*, \"class\")= chr  \"collector_character\" \"collector\"
+  .. ..$ First malignant primary indicator       : list()
+  .. .. ..- attr(*, \"class\")= chr  \"collector_character\" \"collector\"
+  .. ..$ Patient ID                              : list()
+  .. .. ..- attr(*, \"class\")= chr  \"collector_character\" \"collector\"
+  .. ..$ Insurance Recode (2007+)                : list()
+  .. .. ..- attr(*, \"class\")= chr  \"collector_character\" \"collector\"
+  .. ..$ Marital status at diagnosis             : list()
+  .. .. ..- attr(*, \"class\")= chr  \"collector_character\" \"collector\"
+  .. ..$ % Families below poverty ACS 2011-15    : list()
+  .. .. ..- attr(*, \"class\")= chr  \"collector_character\" \"collector\"
+  ..$ default: list()
+  .. ..- attr(*, \"class\")= chr  \"collector_guess\" \"collector\"
+  ..- attr(*, \"class\")= chr \"col_spec\"
+"

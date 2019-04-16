@@ -1,0 +1,35 @@
+"0","```r
+#Get ORs for Insurance status from adjusted model
+mult_OR<-exp(coef(mod_mult))
+#display only Insurance status ORs
+mult_OR[c(TRUE, TRUE, TRUE), c(\"Insur_catMedicaid\",\"Insur_catInsured\")]
+```"
+"1","         Insur_catMedicaid Insur_catInsured
+StageII          0.8480339        0.5399341
+StageIII         0.7645783        0.3634863
+StageIV          0.6883657        0.2204746
+"
+"0","```r
+#Calculate 95% confidence intervals for ORs
+mult_CIs<-exp(confint(mod_mult, level=0.95))
+#display only Insurance status CIs
+mult_CIs[c(\"Insur_catMedicaid\",\"Insur_catInsured\"), c(TRUE,TRUE), c(TRUE,TRUE)]
+```"
+"1",", , StageII
+
+                      2.5 %    97.5 %
+Insur_catMedicaid 0.7891208 0.9113452
+Insur_catInsured  0.5064246 0.5756609
+
+, , StageIII
+
+                      2.5 %    97.5 %
+Insur_catMedicaid 0.7245184 0.8068533
+Insur_catInsured  0.3428004 0.3854206
+
+, , StageIV
+
+                      2.5 %    97.5 %
+Insur_catMedicaid 0.6472930 0.7320446
+Insur_catInsured  0.2062508 0.2356793
+"

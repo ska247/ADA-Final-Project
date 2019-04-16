@@ -1,0 +1,33 @@
+"0","```r
+#create multinomial regression of effect of insurance on stage adjusting for race, age, poverty and gender
+mod_mult <- multinom(Stage_cat_rlv ~ Insur_cat + Race_cat + Age_num + Poverty_num + Male_cat)
+```"
+"1","# weights:  32 (21 variable)
+initial  value 37457.673637 
+iter  10 value 30785.315933
+iter  20 value 30293.803128
+final  value 30139.585509 
+converged
+"
+"0","```r
+summary(mod_mult)
+```"
+"1","Call:
+multinom(formula = Stage_cat_rlv ~ Insur_cat + Race_cat + Age_num + 
+    Poverty_num + Male_cat)
+
+Coefficients:
+         (Intercept) Insur_catMedicaid Insur_catInsured Race_catBlack     Age_num  Poverty_num Male_catMale
+StageII    1.7271018        -0.1648347       -0.6163082     0.2305395 -0.03192233 0.0001605430    0.7822696
+StageIII   1.2550804        -0.2684308       -1.0120136     0.3524369 -0.03865083 0.0001898961    0.5758617
+StageIV   -0.1058217        -0.3734351       -1.5119728     0.6626196 -0.01890719 0.0001144966    1.0403754
+
+Std. Errors:
+         (Intercept) Insur_catMedicaid Insur_catInsured Race_catBlack     Age_num  Poverty_num Male_catMale
+StageII  0.041796578        0.03673596       0.03269023    0.04058250 0.001318033 2.870596e-05 0.0005117801
+StageIII 0.016945723        0.02745833       0.02989517    0.05526453 0.001140544 3.967735e-05 0.0002464929
+StageIV  0.004398757        0.03138893       0.03402587    0.06896941 0.001381096 5.452789e-05 0.0003607252
+
+Residual Deviance: 60279.17 
+AIC: 60321.17 
+"

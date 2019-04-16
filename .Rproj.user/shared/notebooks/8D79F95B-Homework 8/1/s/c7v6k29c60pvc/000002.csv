@@ -1,0 +1,31 @@
+"0","```r
+names(Breast_SEER_Class6)<-c(\"Age\", \"Race\", \"Sex\", \"Diagnosis_year\", \"Stage\", \"First\",
+\"PatientID\", \"Insur\", \"Marital\", \"Poverty\")
+Breast_SEER_Class6 <- Breast_SEER_Class6 %>%
+  mutate(Male_cat=factor(Sex),
+         First_cat=factor(First),
+         Age_num=as.numeric(gsub(\"([0-9]+).*$\", \"\\1\",Age)), #make age as numeric variables
+         #Non-Black as reference
+         Race_cat=case_when(Race==\"White\"
+                          |Race==\"Other (American Indian/AK Native,
+                           Asian/Pacific Islander)\" ~ 0,
+                           Race==\"Black\" ~ 1),
+         Race_cat=factor(Race_cat, 0:1, c(\"Non-Black\", \"Black\")),
+         #Stage I as reference
+         Stage_cat=case_when(Stage == \"IA\" | Stage == \"IB\" ~ 0,
+                             Stage == \"IIA\" | Stage == \"IIB\" ~ 1,
+                             Stage == \"IIIA\" |Stage == \"IIIB\"
+                            |Stage == \"IIIC\" |Stage ==\"IIINOS\" ~ 2,
+                             Stage ==\"IV\" ~ 3),
+         Stage_cat=factor(Stage_cat, 0:3, c(\"StageI\", \"StageII\", \"StageIII\", \"StageIV\")),
+         #Uninsured as reference
+         Insur_cat = case_when(Insur == \"Uninsured\" ~ 0,
+                               Insur == \"Any Medicaid\" ~ 1,
+                               Insur == \"Insured\"|Insur == \"Insured/No specifics\" ~ 2),
+         Insur_cat=factor(Insur_cat, 0:2, c(\"Uninsured\", \"Medicaid\", \"Insured\")), 
+         Poverty_num=as.numeric(Poverty))%>%
+  na.omit() %>%
+  filter(First_cat==\"Yes\")
+```"
+"1","NAs introduced by coercion
+"

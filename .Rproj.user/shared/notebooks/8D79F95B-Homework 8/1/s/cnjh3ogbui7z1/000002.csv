@@ -1,0 +1,52 @@
+"0","```r
+##Hypothesis test for non-reference levels of insurance (Medicaid, Insured) using 
+## adjusted multinomial model
+#Calculate Z score
+z <- summary(mod_mult)$coefficients/summary(mod_mult)$standard.errors
+#2-tailed Z test
+p <- (1 - pnorm(abs(z), 0, 1))*2
+p
+```"
+"1","         (Intercept) Insur_catMedicaid Insur_catInsured Race_catBlack Age_num  Poverty_num Male_catMale
+StageII            0       7.22291e-06                0  1.340974e-08       0 2.236044e-08            0
+StageIII           0       0.00000e+00                0  1.802705e-10       0 1.701320e-06            0
+StageIV            0       0.00000e+00                0  0.000000e+00       0 3.574811e-02            0
+"
+"0","```r
+#Get confidence intervals for the log odds using confint function
+ci <- confint(mod_mult)
+ci
+```"
+"1",", , StageII
+
+                          2.5 %        97.5 %
+(Intercept)        1.6451819907  1.8090215666
+Insur_catMedicaid -0.2368358110 -0.0928335126
+Insur_catInsured  -0.6803798797 -0.5522365134
+Race_catBlack      0.1509992228  0.3100797125
+Age_num           -0.0345056259 -0.0293390306
+Poverty_num        0.0001042803  0.0002168056
+Male_catMale       0.7812664937  0.7832726348
+
+, , StageIII
+
+                          2.5 %        97.5 %
+(Intercept)        1.2218673964  1.2882934086
+Insur_catMedicaid -0.3222481361 -0.2146134475
+Insur_catInsured  -1.0706070691 -0.9534201432
+Race_catBlack      0.2441204190  0.4607533816
+Age_num           -0.0408862537 -0.0364154030
+Poverty_num        0.0001121299  0.0002676623
+Male_catMale       0.5753785403  0.5763447746
+
+, , StageIV
+
+                          2.5 %        97.5 %
+(Intercept)       -1.144431e-01 -0.0972003333
+Insur_catMedicaid -4.349562e-01 -0.3119138833
+Insur_catInsured  -1.578662e+00 -1.4452833672
+Race_catBlack      5.274421e-01  0.7977971908
+Age_num           -2.161409e-02 -0.0162002917
+Poverty_num        7.623926e-06  0.0002213693
+Male_catMale       1.039668e+00  1.0410823691
+"

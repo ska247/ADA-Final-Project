@@ -1,0 +1,21 @@
+"0","```r
+#store coefficients from ordinal model in a table
+coef_table <- coef(summary(mod_ord))
+#calculate and store p values from coeff table
+p <- pnorm(abs(coef_table[, \"t value\"]), lower.tail = FALSE) * 2
+#lower.tail is set to false to ensure that the alpha is p<0.05 rather than p<=0.05
+p
+```"
+"1","Insur_catMedicaid  Insur_catInsured     Race_catBlack           Age_num       Poverty_num      Male_catMale 
+     1.136109e-09     1.978813e-163      6.329159e-24      2.328646e-93      5.733586e-07      0.000000e+00 
+   StageI|StageII  StageII|StageIII  StageIII|StageIV 
+     0.000000e+00      5.810060e-12      3.015393e-86 
+"
+"0","```r
+#add p-values to table
+coef_table <- cbind(coef_table, \"p value\" = p)
+# calculate CIs for coefficients in the table
+ci <- confint(mod_ord) 
+```"
+"1","Waiting for profiling to be done...
+"

@@ -1,0 +1,30 @@
+"0","```r
+mod_ord <- polr(Stage_cat_rlv ~ Insur_cat + Race_cat + Age_num + Poverty_num + Male_cat ,Hess=TRUE) 
+#hess=true will return us the variance and covariance metrics
+summary(mod_ord)
+```"
+"1","Call:
+polr(formula = Stage_cat_rlv ~ Insur_cat + Race_cat + Age_num + 
+    Poverty_num + Male_cat, Hess = TRUE)
+
+Coefficients:
+                      Value Std. Error t value
+Insur_catMedicaid -0.221990  0.0364575  -6.089
+Insur_catInsured  -0.852499  0.0312917 -27.244
+Race_catBlack      0.331875  0.0329024  10.087
+Age_num           -0.026417  0.0012889 -20.496
+Poverty_num        0.000139  0.0000278   5.000
+Male_catMale       0.623560  0.0006379 977.566
+
+Intercepts:
+                 Value    Std. Error t value 
+StageI|StageII    -2.0452   0.0440   -46.5021
+StageII|StageIII  -0.3118   0.0453    -6.8842
+StageIII|StageIV   0.9860   0.0501    19.6830
+
+Residual Deviance: 60418.67 
+AIC: 60436.67 
+"
+"0","```r
+#intercept values are not interpretable though they have theoretical meaning
+```"

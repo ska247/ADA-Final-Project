@@ -1,0 +1,6 @@
+"0","```r
+#attach the SEER dataset
+attach(Breast_SEER_Class6)
+#relevel Stages to use Stage I as the reference group
+Stage_cat_rlv<-relevel(Stage_cat, ref=\"StageI\")
+```"
