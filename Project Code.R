@@ -62,11 +62,11 @@ rm(all_protect)
 #FED, STATE PROTECTION, WHETHER GOT INFO FROM OFFICIAL SOURCES, EDUCATION, RACE
 data_short <- data_short %>%
   mutate( terr_6mo=case_when(Q7A_2 == 4 | Q7A_2 == 5 ~ 1,
-                             Q7A_2 == 1 | Q7A_2 == 2 ~ 0),
+                             Q7A_2 == 1 | Q7A_2 == 2 | Q7A_2 == 3 ~ 0),
           terr_life=case_when(Q7B_2 == 4 | Q7B_2 == 5 ~ 1,
                               Q7B_2 == 1 | Q7B_2 == 2 | Q7B_2 == 3 ~ 0),
           terr_srs=case_when(Q7C_2 == 4 | Q7C_2 == 5 ~ 1,
-                             Q7C_2 == 1 | Q7C_2 == 2 ~ 0),
+                             Q7C_2 == 1 | Q7C_2 == 2 ~ 0 | Q7C_2 == 3 ~ 0),
           local_protect=Q9A_2,
           state_protect=Q9A_3,
           fed_protect=Q9A_4,
@@ -112,37 +112,28 @@ data_short$fed_honest_f<-factor(round(data_short$fed_honest),
 
 str(data_short)
 
-#SAVE DATA TO CSV FILE
-write.csv(data_short, file = "project_data.csv")
-
-attach(data_short)
-
 data_short <- data_short %>%
-  mutate( all_protect_bin=case_when(all_protect_f == 4 | all_protect_f == 5 ~ 1,
-                                    all_protect_f == 1 | all_protect_f == 2 | all_protect_f ==3 ~ 0),
-          all_honest_bin=case_when(all_honest_f == 4 | all_honest_f == 5 ~ 1,
-                                   all_honest_f == 1 | all_honest_f == 2 | all_protect_f ==3 ~ 0),
-  )
-
-data_short <- data_short %>%
-  mutate( local_protect_bin=case_when(local_protect == "(4) 4" | local_protect == "(5) Extremely sure" ~ 1,
-                                      local_protect == "(1) Not at all sure" | local_protect == "(2) 2" | 
-                                      local_protect == "(3) 3" ~ 0),
-          local_honest_bin=case_when(local_honest_f == 4 | local_honest_f == 5 ~ 1,
-                                     local_honest_f == 1 | local_honest_f == 2 | local_honest_f ==3 ~ 0),
-          state_protect_bin=case_when(state_protect == "(4) 4" | state_protect == "(5) Extremely sure" ~ 1,
-                                      state_protect == "(1) Not at all sure" | state_protect == "(2) 2" | 
-                                      state_protect == "(3) 3" ~ 0),
-          state_honest_bin=case_when(state_honest_f == 4 | state_honest_f == 5 ~ 1,
+  mutate(all_protect_bin=case_when(all_protect_f == 4 | all_protect_f == 5 ~ 1,
+                                   all_protect_f == 1 | all_protect_f == 2 | all_protect_f ==3 ~ 0),
+         all_honest_bin=case_when(all_honest_f == 4 | all_honest_f == 5 ~ 1,
+                                  all_honest_f == 1 | all_honest_f == 2 | all_protect_f ==3 ~ 0),
+         local_protect_bin=case_when(local_protect == "(4) 4" | local_protect == "(5) Extremely sure" ~ 1,
+                                     local_protect == "(1) Not at all sure" | local_protect == "(2) 2" | 
+                                     local_protect == "(3) 3" ~ 0),
+         local_honest_bin=case_when(local_honest_f == 4 | local_honest_f == 5 ~ 1,
+                                    local_honest_f == 1 | local_honest_f == 2 | local_honest_f ==3 ~ 0),
+         state_protect_bin=case_when(state_protect == "(4) 4" | state_protect == "(5) Extremely sure" ~ 1,
+                                     state_protect == "(1) Not at all sure" | state_protect == "(2) 2" | 
+                                     state_protect == "(3) 3" ~ 0),
+         state_honest_bin=case_when(state_honest_f == 4 | state_honest_f == 5 ~ 1,
                                      state_honest_f == 1 | state_honest_f == 2 | state_honest_f ==3 ~ 0),
-          fed_protect_bin=case_when(fed_protect == "(4) 4" | fed_protect == "(5) Extremely sure" ~ 1,
-                                    fed_protect == "(1) Not at all sure" | fed_protect == "(2) 2" | 
-                                    fed_protect == "(3) 3" ~ 0),
-          fed_honest_bin=case_when(fed_honest_f == 4 | fed_honest_f == 5 ~ 1,
-                                   fed_honest_f == 1 | fed_honest_f == 2 | fed_honest_f ==3 ~ 0)
+         fed_protect_bin=case_when(fed_protect == "(4) 4" | fed_protect == "(5) Extremely sure" ~ 1,
+                                   fed_protect == "(1) Not at all sure" | fed_protect == "(2) 2" | 
+                                   fed_protect == "(3) 3" ~ 0),
+         fed_honest_bin=case_when(fed_honest_f == 4 | fed_honest_f == 5 ~ 1,
+                                  fed_honest_f == 1 | fed_honest_f == 2 | fed_honest_f ==3 ~ 0)
   )
 
-data_short <- data_short [-c(42:47)]
 
 #RUN PRELIM MODEL FOR PROTECTION PREDICTED BY HONESTY
 mod_all <- polr(all_protect_f ~ all_honest_f,Hess=TRUE) 
