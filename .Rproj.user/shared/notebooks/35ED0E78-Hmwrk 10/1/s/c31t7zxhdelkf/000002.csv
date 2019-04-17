@@ -1,0 +1,7 @@
+"0","```r
+#keep only events and those without an unknown stage
+BRCA_event_unk<-BRCA[which(BRCA$event_f==1 & BRCA$stage_f!=\"Stage Unknown\"),]
+#plot density vs stage at diagnosis
+ggplot(BRCA_event_unk, aes(surv_mo, color=factor(stage_f))) + 
+  geom_density(alpha=.3) + theme_minimal() 
+```"

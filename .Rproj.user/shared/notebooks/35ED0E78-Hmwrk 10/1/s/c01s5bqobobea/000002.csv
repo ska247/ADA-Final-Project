@@ -1,0 +1,70 @@
+"0","```r
+#by stage of diagnosis
+#calculate log rank test
+survdiff(Surv(surv_mo, event_f) ~ stage_f,data=BRCA)
+```"
+"1","Call:
+survdiff(formula = Surv(surv_mo, event_f) ~ stage_f, data = BRCA)
+
+n=147246, 421 observations deleted due to missingness.
+
+                          N Observed Expected (O-E)^2/E (O-E)^2/V
+stage_f=Stage 1       65523     1668     8773      5754     11071
+stage_f=Stage 2       48443     4366     6221       553       839
+stage_f=Stage 3       17612     4738     2029      3617      4078
+stage_f=Stage 4        7762     5534      514     49046     50806
+stage_f=Stage Unknown  7906     2028      798      1898      1989
+
+ Chisq= 61375  on 4 degrees of freedom, p= <2e-16 
+"
+"0","```r
+#post-hoc testing between groups for log rank test
+pairwise_survdiff(Surv(surv_mo, event_f) ~ stage_f,data=BRCA)
+```"
+"1","
+	Pairwise comparisons using Log-Rank test 
+
+data:  BRCA and stage_f 
+
+              Stage 1 Stage 2 Stage 3 Stage 4
+Stage 2       < 2e-16 -       -       -      
+Stage 3       < 2e-16 < 2e-16 -       -      
+Stage 4       < 2e-16 < 2e-16 < 2e-16 -      
+Stage Unknown < 2e-16 < 2e-16 0.00054 < 2e-16
+
+P value adjustment method: BH 
+"
+"0","```r
+#by insurance group
+#calculate log rank test
+survdiff(Surv(surv_mo, event_f) ~ insurance_f,data=BRCA)
+```"
+"1","Call:
+survdiff(formula = Surv(surv_mo, event_f) ~ insurance_f, data = BRCA)
+
+                                      N Observed Expected (O-E)^2/E (O-E)^2/V
+insurance_f=Insured              102914    10639    13169     486.0    1715.3
+insurance_f=Insured/No specifics  21784     2945     2677      26.8      31.4
+insurance_f=Any Medicaid          15801     3189     1788    1098.0    1219.3
+insurance_f=Uninsured              2677      620      281     410.9     418.2
+insurance_f=Unknown                4491     1000      478     568.4     584.8
+
+ Chisq= 2597  on 4 degrees of freedom, p= <2e-16 
+"
+"0","```r
+#post-hoc testing between groups for log rank test
+pairwise_survdiff(Surv(surv_mo, event_f) ~ insurance_f,data=BRCA)
+```"
+"1","
+	Pairwise comparisons using Log-Rank test 
+
+data:  BRCA and insurance_f 
+
+                     Insured Insured/No specifics Any Medicaid Uninsured
+Insured/No specifics < 2e-16 -                    -            -        
+Any Medicaid         < 2e-16 < 2e-16              -            -        
+Uninsured            < 2e-16 < 2e-16              1.2e-06      -        
+Unknown              < 2e-16 < 2e-16              1.1e-05      0.36     
+
+P value adjustment method: BH 
+"

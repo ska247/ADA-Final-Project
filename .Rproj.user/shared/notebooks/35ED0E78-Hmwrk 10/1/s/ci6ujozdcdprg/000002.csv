@@ -1,0 +1,9 @@
+"0","```r
+#By STAGE OF DIAGNOSIS
+#calculate KM survivor function values for plot
+BC_surv_stage <- survfit(Surv(surv_mo,event_f) ~ stage_f, BRCA)
+#plot KM values generated with CIs
+autoplot(BC_surv_stage) + 
+  labs(x=\"Survival months\", y=\"Proportion surviving\", 
+       title=\"KM survival plots for Breast Cancer by Stage of Diagnosis\") 
+```"

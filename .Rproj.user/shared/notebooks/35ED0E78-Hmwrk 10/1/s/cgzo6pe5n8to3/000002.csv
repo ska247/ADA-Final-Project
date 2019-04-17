@@ -1,0 +1,36 @@
+"0","```r
+#view variables for correct categorization
+table(BRCA$stage_f)
+```"
+"1","
+      Stage 1       Stage 2       Stage 3       Stage 4 Stage Unknown 
+        65524         48448         17615          7774          8566 
+"
+"0","```r
+table(BRCA$event_f)
+```"
+"1","
+     0      1 
+129426  18922 
+"
+"0","```r
+table(BRCA$insurance_f)
+```"
+"1","
+             Insured Insured/No specifics         Any Medicaid            Uninsured              Unknown 
+              102919                21795                15802                 2678                 5154 
+"
+"0","```r
+#make final data set
+summary(BRCA$surv_mo)  
+```"
+"1","   Min. 1st Qu.  Median    Mean 3rd Qu.    Max.    NA's 
+   0.00   61.00   71.00   65.96   82.00   95.00     681 
+"
+"0","```r
+BRCA <- BRCA[!(is.na(BRCA$surv_mo)),]
+summary(BRCA$surv_mo)
+```"
+"1","   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+   0.00   61.00   71.00   65.96   82.00   95.00 
+"

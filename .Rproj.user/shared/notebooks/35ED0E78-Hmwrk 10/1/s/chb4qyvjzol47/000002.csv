@@ -1,0 +1,8 @@
+"0","```r
+#keep only events
+BRCA_noncens<-BRCA[which(BRCA$event_f==1),]
+#plot density vs stage at diagnosis
+ggplot(BRCA_noncens, aes(surv_mo, color=factor(insurance_f))) + 
+  #geom_histogram(aes(y=..density..), binwidth=1, bins=30, position=\"dodge\") + 
+  geom_density(alpha=.3) + theme_minimal() 
+```"

@@ -1,0 +1,22 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1555434774353.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "2986256156",
+    "id" : "A5CD4638",
+    "lastKnownWriteTime" : 1555444835,
+    "last_content_update" : -2147483648,
+    "path" : "~/ADA/Project/Project Code.R",
+    "project_path" : "Project Code.R",
+    "properties" : {
+        "cursorPosition" : "6,18",
+        "scrollLine" : "0"
+    },
+    "relative_order" : 2,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}

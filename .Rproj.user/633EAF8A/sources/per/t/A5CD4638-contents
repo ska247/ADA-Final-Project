@@ -6,6 +6,7 @@ library(nnet) #Multinomial logistic regression
 library(MASS) #Ordinal logistic regression
 library(lmtest) #Likelihood ratio test
 
+
 #LOAD FULL DATA
 load("34891-0001-Data.rda")
 
@@ -16,18 +17,23 @@ data_short<- subset(da34891.0001,select = c(1:2,124:137,
                                        289:290,301:303,
                                        341,343,359:360,
                                        399))  
-
-#REMOVE CREATION DATA AND VARIABLES
-rm(da34891.0001)
-data_short<-data_short[ -c(3:16)]
-
 #ATTACH THE DATASET
 attach(data_short)
+
+#CALCULATE WHETHER SOMEONE HAS SEEN SOMEONE ELSE EVER DO EMERGENCY MANAGEMENT
+#seen_sm1 <- sapply(data_short[3:16], as.numeric)
+#seen_true<-apply(seen_sm1, 1, function(r) any(r == 1))
+#data_short$saw_sm1<-seen_true
+
+#REMOVE CREATION DATA AND VARIABLES
+rm(seen_true, seen_sm1, da34891.0001)
+data_short<-data_short[ -c(3:16)]
+
 
 #CREATE VARIABLES FOR ALL, FED, STATE, LOCAL HONESTY WITH PUBLIC AND CONVERT TO ROUND # FACTORS
 all_vars<- sapply(data_short[5:15], as.numeric)
 data_short$all_honest<-rowMeans(all_vars,na.rm=TRUE) #average score for all agencies
-data_short$all_honest_f<-factor(round(data_short$all_honest), 
+data_short$all_honest_f<-factor(round(all_honest), 
                                 levels=c(1,2,3,4,5),
                                 labels=c("1","2","3","4","5")) #make into round factor variable
 
@@ -129,7 +135,6 @@ attach(data_analysis)
 #LINEARITY ASSUMPTION FOR CONTINUOUS PREDICTORS
 #AGE
 summary(data_analysis$COMB_AGE) #TAKE A LOOK AT THE DISTRIBUTION
-shapiro.test(data_analysis$COMB_AGE) #CHECK FOR NORMALITY - RESULT: NOT NORMALLY DISTRIBUTED
 log_age <- data_analysis$COMB_AGE * log(data_analysis$COMB_AGE) #MAKE LOGIT TRANSFORMATION
 boxTidwellage <- glm(all_protect_bin ~ COMB_AGE + log_age, data=data_analysis, family="binomial") 
 summary(boxTidwellage) #RUN BOX TIDWELL TEST FOR AGE ON ALL PROTECT OUTCOME

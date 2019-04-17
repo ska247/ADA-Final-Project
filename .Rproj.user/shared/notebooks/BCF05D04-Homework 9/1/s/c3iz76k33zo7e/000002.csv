@@ -1,0 +1,8 @@
+"0","```r
+table(BRCA$stage_f)
+table(BRCA$event_f)
+table(BRCA$insurance_f)
+summary(BRCA$surv_mo)
+BRCA <- BRCA[!(is.na(BRCA$surv_mo)),]
+summary(BRCA$surv_mo)
+```"

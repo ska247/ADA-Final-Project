@@ -1,0 +1,13 @@
+"0","```r
+#install.packages(\"survminer\")#for pairwise diffs
+library(readr) #for read txt file
+library(survival) #for calculating KM values
+library(survminer)#for pairwise diffs
+library(ggfortify) #for KM curves
+library(readxl) # for reading in excel file
+library(ggplot2) # for plotting KM curve
+library(tidyverse) # for various packages
+#load data for this exercise
+BRCA <- read_excel(\"BRCA_SEER_SURV.xlsx\", sheet=1) #load data for this exercise
+str(BRCA)
+```"

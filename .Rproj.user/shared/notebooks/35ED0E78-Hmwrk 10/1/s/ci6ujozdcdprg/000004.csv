@@ -1,0 +1,9 @@
+"0","```r
+#By INSURANCE GROUP
+#calculate KM survivor function values for plot
+BC_surv_ins <- survfit(Surv(surv_mo,event_f) ~ insurance_f, BRCA) 
+#plot KM values generated with CIs
+autoplot(BC_surv_ins) + 
+  labs(x=\"Survival months\", y=\"Proportion surviving\", 
+       title=\"KM survival plots for Breast Cancer by Insurance Status\") 
+```"
