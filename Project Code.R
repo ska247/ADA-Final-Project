@@ -65,13 +65,13 @@ data_short$all_protect_f<-factor(round(data_short$all_protect),
 rm(all_protect)
 
 #CONVERT LIFETIME PERCEIVED RISK OF TERRORISM VARIABLE TO NUMERIC
-data_short$Q7B_2<-as.numeric(Q7B_2)
+#data_short$Q7B_2<-as.numeric(Q7B_2)
 
 #CREATE BINARY VARIABLES FOR THINKING AT RISK OF TERRORISM, RENAME VARIABLES FOR LOCAL,
 #FED, STATE PROTECTION, WHETHER GOT INFO FROM OFFICIAL SOURCES, EDUCATION, RACE
 data_short <- data_short %>%
-  mutate( terr_life=case_when(Q7B_2 == 4 | Q7B_2 == 5 ~ 1,
-                              Q7B_2 == 1 | Q7B_2 == 2 | Q7B_2 == 3 ~ 0),
+  mutate( terr_life=Q7B_2,
+          #case_when(Q7B_2 == 4 | Q7B_2 == 5 ~ 1, Q7B_2 == 1 | Q7B_2 == 2 | Q7B_2 == 3 ~ 0),
           local_protect=Q9A_2,
           state_protect=Q9A_3,
           fed_protect=Q9A_4,
@@ -79,6 +79,9 @@ data_short <- data_short %>%
           education=Q16,
           race=Q18
           )
+#convert NA level to NAs in believe variable
+levels(data_short$believe)[levels(data_short$believe)=='(6) N/A'] <- NA
+levels(data_short$believe)
 
 #DROP VARIABLES USED TO CALCULATE RISK AND THAT WERE CONVERTED TO NEW NAME (COULD'VE RENAMED 
 # IN THE FIRST PLACE BUT DID IT THIS WAY FIRST AND NOT WORTH THE EFFORT TO UNDO)
@@ -121,8 +124,24 @@ data_analysis<-na.omit(data_analysis)
 attach(data_analysis)
 
 ######
+#DEMOGRAPHICS
+######
+
+#data_analysis %>% 
+ # group_by(all_protect_bin) %>% 
+  #summarise(value = median(COMB_AGE), percent = )
+
+#install.packages("table1")
+library(table1)
+
+table1(~ factor(education) + COMB_AGE + factor(believe) + factor(terr_life) | all_protect_bin, data=data_analysis)
+
+
+######
 #LOGISTIC REGRESSION MODELS
 ######
+
+#COVARIATE DETERMINATION - DAG
 
 #ASSUMPTIONS
 
@@ -249,3 +268,4 @@ lrtest(fed_model, fed_model_adj)
 #4.56 TIMES HIGHER AMONG THOSE WHO BELIEVE THAT FEDERAL GOVERNMENT IS HONEST WITH THE PUBLIC
 #ABOUT TERRORISM THAN THOSE WHO DO NOT. 
 
+OR_state
