@@ -1,3 +1,15 @@
+---
+title: "ADA Final Project"
+author: "Lat'Anna Davis and Stephanie Kern-Allely"
+date: "April 24, 2019"
+output:
+  html_document:
+    code_folding: "hide"
+---
+
+## Add libraries
+
+```{r libraries}
 library(knitr) #for creating nicer tables
 library(tidyverse) # for various packages
 library(dplyr) # FOR PIPING
@@ -5,6 +17,10 @@ library(readr) #for read txt file
 library(nnet) #Multinomial logistic regression
 library(MASS) #Ordinal logistic regression
 library(lmtest) #Likelihood ratio test
+```
+
+## Add full data set and create short dataset with only variables needed for variable creation
+```{r data_loading}
 
 #LOAD FULL DATA
 load("34891-0001-Data.rda")
@@ -23,6 +39,12 @@ data_short<-data_short[ -c(3:16)]
 
 #ATTACH THE DATASET
 attach(data_short)
+
+```
+
+## Data management to create all, local, state, and federal variables and create analysis data set
+
+```{r data_management}
 
 #CREATE VARIABLES FOR ALL, FED, STATE, LOCAL HONESTY WITH PUBLIC AND CONVERT TO ROUND # FACTORS
 all_vars<- sapply(data_short[5:15], as.numeric)
@@ -117,11 +139,18 @@ data_short <- data_short %>%
                                   fed_honest_f == 1 | fed_honest_f == 2 | fed_honest_f ==3 ~ 0)
   )
 
+
 #MAKE ANALYSIS DATASET WITH ONLY VARIABLES USED IN ANALYSIS AND REMOVE CASES WITH ANY MISSING
 data_analysis<-data_short[c(1:14,16:23)]
 data_analysis<-na.omit(data_analysis)
 
 attach(data_analysis)
+
+```
+
+## CHARACTERISTICS OF POPULATION
+
+```{r} 
 
 ######
 #DEMOGRAPHICS
@@ -136,11 +165,12 @@ library(table1)
 
 table1(~ factor(education) + COMB_AGE + factor(believe) + factor(terr_life) | all_protect_bin, data=data_analysis)
 
-table1(~ factor(education) + COMB_AGE + factor(believe) + factor(terr_life) | fed_protect_bin, data=data_analysis)
 
-table1(~ factor(education) + COMB_AGE + factor(believe) + factor(terr_life) | state_protect_bin, data=data_analysis)
+```
 
-table1(~ factor(education) + COMB_AGE + factor(believe) + factor(terr_life) | local_protect_bin, data=data_analysis)
+## Perform logistic regression assumptions and overall regression
+
+```{r}
 
 
 ######
@@ -157,19 +187,20 @@ summary(data_analysis$COMB_AGE) #TAKE A LOOK AT THE DISTRIBUTION
 shapiro.test(data_analysis$COMB_AGE) #CHECK FOR NORMALITY - RESULT: NOT NORMALLY DISTRIBUTED
 log_age <- data_analysis$COMB_AGE * log(data_analysis$COMB_AGE) #MAKE LOGIT TRANSFORMATION
 boxTidwellage <- glm(all_protect_bin ~ COMB_AGE + log_age, data=data_analysis, family="binomial") 
-summary(boxTidwellage) #RUN BOX TIDWELL TEST FOR AGE ON ALL PROTECT OUTCOME
 
 #Box Tidwell coefficient is not significant so age does not violate the linearity assumption
 #Thus, age is appropriate to run in the logistic model as a continuous variable
+summary(boxTidwellage) #RUN BOX TIDWELL TEST FOR AGE ON ALL PROTECT OUTCOME
+
 
 #INFLUENTIAL VALUES
 #logistic model with age as a predictor FOR COOK'S
 ageCD <- glm(all_protect_bin ~ COMB_AGE, data=data_analysis, family="binomial")
 
+#There are no values with Cook's Ds above 0.015 but nothing concerning pops out here
 #influence plot - Cook's D plot-identifies observation number in parent dataset
 plot(ageCD, which=4, id.n=5, col="red") 
 
-#There are no values with Cook's Ds above 0.015 but nothing concerning pops out here
 
 #MODELS
 
@@ -199,10 +230,16 @@ lrtest(all_model, all_model_adj)
 #23.2 TIMES HIGHER AMONG THOSE WHO BELIEVE THAT ALL LEVELS OF GOVERNMENT ARE HONEST WITH THE PUBLIC
 #ABOUT TERRORISM THAN THOSE WHO DO NOT. 
 
+```
+
+## PERFORM logistic regressions for local, state, and federal levels.
+
+```{r}
 
 #LOCAL MODEL
 #unadjusted
 local_model <- glm(local_protect_bin ~ local_honest_bin, data=data_analysis, family = binomial)
+summary(local_model)
 
 OR_local<-exp(cbind("Odds ratio" = coef(local_model), confint.default(local_model, level = 0.95)))
 
@@ -210,6 +247,7 @@ OR_local<-exp(cbind("Odds ratio" = coef(local_model), confint.default(local_mode
 local_model_adj <- glm(local_protect_bin ~ local_honest_bin + COMB_AGE + education 
                      + believe + terr_life, 
                      data=data_analysis, family = binomial)
+summary(local_model_adj)
 
 OR_local_adj<-exp(cbind("Odds ratio" = coef(local_model_adj), confint.default(local_model_adj, level = 0.95)))
 
@@ -227,6 +265,7 @@ lrtest(local_model, local_model_adj)
 #STATE MODEL
 #unadjusted
 state_model <- glm(state_protect_bin ~ state_honest_bin, data=data_analysis, family = binomial)
+summary(state_model)
 
 exp(cbind("Odds ratio" = coef(state_model), confint.default(state_model, level = 0.95)))
 
@@ -234,6 +273,7 @@ exp(cbind("Odds ratio" = coef(state_model), confint.default(state_model, level =
 state_model_adj <- glm(state_protect_bin ~ state_honest_bin + COMB_AGE + education 
                        + believe + terr_life, 
                        data=data_analysis, family = binomial)
+summary(state_model_adj)
 
 OR_state_adj<-exp(cbind("Odds ratio" = coef(state_model_adj), 
                         confint.default(state_model_adj, level = 0.95)))
@@ -252,6 +292,7 @@ lrtest(state_model, state_model_adj)
 #FEDERAL MODEL
 #unadjusted
 fed_model <- glm(fed_protect_bin ~ fed_honest_bin, data=data_analysis, family = binomial)
+summary(fed_model)
 
 exp(cbind("Odds ratio" = coef(fed_model), confint.default(fed_model, level = 0.95)))
 
@@ -274,26 +315,4 @@ lrtest(fed_model, fed_model_adj)
 #4.56 TIMES HIGHER AMONG THOSE WHO BELIEVE THAT FEDERAL GOVERNMENT IS HONEST WITH THE PUBLIC
 #ABOUT TERRORISM THAN THOSE WHO DO NOT. 
 
-######
-#MODEL TESTING
-######
-
-install.packages("InformationValue")
-library(InformationValue)
-
-concordance(data_analysis$all_protect_bin, predicted)
-#83.6%
-
-predicted = predict(all_model_adj, type="response")
-
-table(data_analysis$all_protect_bin, predicted > 0.5)
-
-#sensitivity
-38/(250+38)
-#13.2% of positives correctly predicted by the model
-
-#specificity
-1720/(1720+21)
-#98.7% of negatives correctly predicted by the model
-
-
+```
